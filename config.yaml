@@ -20,7 +20,7 @@ transformer:
   max_length: 64
   batch_size: 8
   eval_batch_size: 16
-  learning_rate: 2e-5
+  learning_rate: 0.00002
   epochs: 4
   warmup_ratio: 0.06
   output_dir: "experiments/outputs"

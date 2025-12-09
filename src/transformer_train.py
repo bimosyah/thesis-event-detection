@@ -29,6 +29,11 @@ def train_and_eval(train_csv, val_csv, test_csv, output_dir, seed=42):
     val_df = pd.read_csv(val_csv)[["message", "lable"]]
     test_df = pd.read_csv(test_csv)[["message", "lable"]]
 
+    # Rename 'lable' to 'labels' for Trainer compatibility
+    train_df = train_df.rename(columns={'lable': 'labels'})
+    val_df = val_df.rename(columns={'lable': 'labels'})
+    test_df = test_df.rename(columns={'lable': 'labels'})
+
     ds_train = Dataset.from_pandas(train_df)
     ds_val = Dataset.from_pandas(val_df)
     ds_test = Dataset.from_pandas(test_df)
@@ -40,9 +45,9 @@ def train_and_eval(train_csv, val_csv, test_csv, output_dir, seed=42):
     ds_train = ds_train.map(preprocess, batched=True)
     ds_val = ds_val.map(preprocess, batched=True)
     ds_test = ds_test.map(preprocess, batched=True)
-    ds_train.set_format(type='torch', columns=['input_ids', 'attention_mask', 'lable'])
-    ds_val.set_format(type='torch', columns=['input_ids', 'attention_mask', 'lable'])
-    ds_test.set_format(type='torch', columns=['input_ids', 'attention_mask', 'lable'])
+    ds_train.set_format(type='torch', columns=['input_ids', 'attention_mask', 'labels'])
+    ds_val.set_format(type='torch', columns=['input_ids', 'attention_mask', 'labels'])
+    ds_test.set_format(type='torch', columns=['input_ids', 'attention_mask', 'labels'])
 
     training_args = TrainingArguments(
         output_dir=os.path.join(output_dir, f"seed_{seed}"),
@@ -66,7 +71,7 @@ def train_and_eval(train_csv, val_csv, test_csv, output_dir, seed=42):
         train_dataset=ds_train,
         eval_dataset=ds_val,
         compute_metrics=compute_metrics,
-        tokenizer=tokenizer
+        processing_class=tokenizer
     )
 
     trainer.train()
@@ -74,7 +79,7 @@ def train_and_eval(train_csv, val_csv, test_csv, output_dir, seed=42):
     metrics = preds.metrics
     # save predictions for stats
     preds_lables = np.argmax(preds.predictions, axis=1)
-    out_df = pd.DataFrame({"message": test_df["message"], "lable": test_df["lable"], "pred": preds_lables})
+    out_df = pd.DataFrame({"message": test_df["message"], "lable": test_df["labels"], "pred": preds_lables})
     os.makedirs(output_dir, exist_ok=True)
     out_df.to_csv(os.path.join(output_dir, f"preds_seed_{seed}.csv"), index=False)
     # Save metrics
