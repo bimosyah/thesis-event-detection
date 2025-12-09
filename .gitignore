@@ -42,12 +42,6 @@ ENV/
 .AppleDouble
 .LSOverride
 
-# Model outputs
-experiments/outputs/**/*
-!experiments/outputs/**/.gitkeep
-experiments/logs/**/*
-!experiments/logs/.gitkeep
-
 # Results and checkpoints
 *.pkl
 *.pth
