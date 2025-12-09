@@ -1,52 +1,35 @@
-# Event Detection Configuration
+seed_list: [ 42, 7, 123, 2023, 999 ]
+dataset_path: "data/raw/dataset.csv"
+processed_dir: "data/processed"
+augmented_dir: "data/augmented"
+test_ratio: 0.20
+val_ratio: 0.10
+random_state: 42
 
-data:
-  raw_path: "data/raw/dataset.csv"
-  processed_path: "data/processed/"
-  augmented_path: "data/augmented/"
-  split_ratio:
-    train: 0.7
-    val: 0.15
-    test: 0.15
-  random_seed: 42
+baseline:
+  tfidf:
+    ngram_range: [ 1, 2 ]
+    max_features: 20000
+  lr:
+    C: 1.0
+    solver: "liblinear"
+    class_weight: "balanced"
+
+transformer:
+  model_name: "distilroberta-base"
+  max_length: 64
+  batch_size: 8
+  eval_batch_size: 16
+  learning_rate: 2e-5
+  epochs: 4
+  warmup_ratio: 0.06
+  output_dir: "experiments/outputs"
 
 augmentation:
-  methods:
-    - back_translation
-    - synonym_replacement
-    - random_insertion
-  augmentation_factors:
+  method: "mlm"  # options: mlm | backtranslation | synonym
+  mlm:
+    replace_prob: 0.15
+  augment_factors:
     - 2
     - 5
-
-models:
-  baseline:
-    type: "naive_bayes"
-    vectorizer: "tfidf"
-    max_features: 5000
-
-  transformer:
-    model_name: "distilroberta-base"
-    max_length: 128
-    batch_size: 16
-    learning_rate: 2e-5
-    num_epochs: 5
-    warmup_steps: 500
-
-training:
-  output_dir: "experiments/outputs/"
-  log_dir: "experiments/logs/"
-  save_steps: 500
-  eval_steps: 500
-  early_stopping_patience: 3
-
-evaluation:
-  metrics:
-    - accuracy
-    - precision
-    - recall
-    - f1_score
-  statistical_tests:
-    - t_test
-    - wilcoxon
-
+  mlm_top_k: 5

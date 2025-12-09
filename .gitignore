@@ -42,14 +42,6 @@ ENV/
 .AppleDouble
 .LSOverride
 
-# Data files (keep structure, ignore large files)
-data/raw/*.csv
-data/processed/*.csv
-data/augmented/*.csv
-!data/raw/.gitkeep
-!data/processed/.gitkeep
-!data/augmented/.gitkeep
-
 # Model outputs
 experiments/outputs/**/*
 !experiments/outputs/**/.gitkeep
