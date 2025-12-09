@@ -10,8 +10,8 @@ $PYTHON src/data_prep.py
 echo "2) Baseline training..."
 $PYTHON src/baseline_train.py
 
-#echo "3) Augment train datasets (x2, x5)..."
-#$PYTHON src/augment.py
+echo "3) Augment train datasets (x2, x5)..."
+$PYTHON src/augment.py
 #
 #echo "4) Train Transformer on original and augmented (multi-seed)"
 #OUTDIR=experiments/outputs/distil_roberta_orig
