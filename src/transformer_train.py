@@ -46,7 +46,7 @@ def train_and_eval(train_csv, val_csv, test_csv, output_dir, seed=42):
 
     training_args = TrainingArguments(
         output_dir=os.path.join(output_dir, f"seed_{seed}"),
-        evaluation_strategy="epoch",
+        eval_strategy="epoch",
         per_device_train_batch_size=cfg["transformer"]["batch_size"],
         per_device_eval_batch_size=cfg["transformer"]["eval_batch_size"],
         learning_rate=cfg["transformer"]["learning_rate"],
