@@ -12,14 +12,14 @@ $PYTHON src/baseline_train.py
 
 echo "3) Augment train datasets (x2, x5)..."
 $PYTHON src/augment.py
-#
-#echo "4) Train Transformer on original and augmented (multi-seed)"
-#OUTDIR=experiments/outputs/distil_roberta_orig
-#mkdir -p $OUTDIR
-#for SEED in 42 7 123 2023 999; do
-#  echo "seed $SEED original..."
-#  $PYTHON src/transformer_train.py --train data/processed/train.csv --val data/processed/val.csv --test data/processed/test.csv --out $OUTDIR --seed $SEED
-#done
+
+echo "4) Train Transformer on original and augmented (multi-seed)"
+OUTDIR=experiments/outputs/distil_roberta_orig
+mkdir -p $OUTDIR
+for SEED in 42 7 123 2023 999; do
+ echo "seed $SEED original..."
+ $PYTHON src/transformer_train.py --train data/processed/train.csv --val data/processed/val.csv --test data/processed/test.csv --out $OUTDIR --seed $SEED
+done
 #
 ## augmented x2
 #OUTDIR2=experiments/outputs/distil_roberta_aug_x2
