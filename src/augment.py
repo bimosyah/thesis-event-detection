@@ -55,8 +55,8 @@ def augment_train(csv_in, csv_out, factor=2):
     model_name = cfg["transformer"]["model_name"]
     tokenizer = AutoTokenizer.from_pretrained(model_name)
     mlm = AutoModelForMaskedLM.from_pretrained(model_name)
-    masker = pipeline("fill-mask", model=mlm, tokenizer=tokenizer,
-                      device=0 if os.getenv("CUDA_VISIBLE_DEVICES") else -1)
+    masker = pipeline("fill-mask", model=mlm, tokenizer=tokenizer, device=0)
+
     new_rows = []
     for idx, row in df.iterrows():
         text = row["message"]
