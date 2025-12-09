@@ -1,179 +1,92 @@
-"""
-Transformer model training module
-"""
-
-import pandas as pd
-import torch
-from torch.utils.data import Dataset, DataLoader
-from transformers import (
-    AutoTokenizer,
-    AutoModelForSequenceClassification,
-    TrainingArguments,
-    Trainer
-)
-import logging
-from typing import Dict, Any
+import argparse
+import numpy as np
 import os
+import pandas as pd
 
-logger = logging.getLogger(__name__)
+from datasets import Dataset
+from sklearn.metrics import precision_recall_fscore_support, accuracy_score
+from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trainer, TrainingArguments
 
+from utils import load_config, set_seed
 
-class TextDataset(Dataset):
-    """Custom dataset for text classification"""
-
-    def __init__(self, texts, labels, tokenizer, max_length=128):
-        """
-        Initialize dataset
-
-        Args:
-            texts: List of text strings
-            labels: List of labels
-            tokenizer: Tokenizer instance
-            max_length: Maximum sequence length
-        """
-        self.texts = texts
-        self.labels = labels
-        self.tokenizer = tokenizer
-        self.max_length = max_length
-
-    def __len__(self):
-        return len(self.texts)
-
-    def __getitem__(self, idx):
-        text = str(self.texts[idx])
-        label = self.labels[idx]
-
-        encoding = self.tokenizer(
-            text,
-            add_special_tokens=True,
-            max_length=self.max_length,
-            padding='max_length',
-            truncation=True,
-            return_tensors='pt'
-        )
-
-        return {
-            'input_ids': encoding['input_ids'].flatten(),
-            'attention_mask': encoding['attention_mask'].flatten(),
-            'labels': torch.tensor(label, dtype=torch.long)
-        }
+cfg = load_config()
 
 
-def train_transformer(
-    config: Dict[str, Any],
-    train_data_path: str,
-    output_dir: str,
-    experiment_name: str = "transformer"
-):
-    """
-    Train transformer model
+def compute_metrics(pred):
+    lables = pred.lable_ids
+    preds = np.argmax(pred.predictions, axis=1)
+    precision, recall, f1, _ = precision_recall_fscore_support(lables, preds, average='binary', pos_lable=1)
+    acc = accuracy_score(lables, preds)
+    return {"accuracy": acc, "precision": precision, "recall": recall, "f1": f1}
 
-    Args:
-        config: Configuration dictionary
-        train_data_path: Path to training data
-        output_dir: Directory to save outputs
-        experiment_name: Name of the experiment
-    """
-    logger.info(f"Starting transformer training: {experiment_name}")
 
-    # Create output directory
-    os.makedirs(output_dir, exist_ok=True)
+def train_and_eval(train_csv, val_csv, test_csv, output_dir, seed=42):
+    set_seed(seed)
+    tokenizer = AutoTokenizer.from_pretrained(cfg["transformer"]["model_name"])
+    model = AutoModelForSequenceClassification.from_pretrained(cfg["transformer"]["model_name"], num_lables=2)
 
-    # Load data
-    train_df = pd.read_csv(train_data_path)
-    val_df = pd.read_csv(f"{config['data']['processed_path']}/val.csv")
+    train_df = pd.read_csv(train_csv)[["message", "lable"]]
+    val_df = pd.read_csv(val_csv)[["message", "lable"]]
+    test_df = pd.read_csv(test_csv)[["message", "lable"]]
 
-    # Initialize tokenizer and model
-    model_name = config['models']['transformer']['model_name']
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    ds_train = Dataset.from_pandas(train_df)
+    ds_val = Dataset.from_pandas(val_df)
+    ds_test = Dataset.from_pandas(test_df)
 
-    # Determine number of labels
-    num_labels = train_df['label'].nunique()
-    model = AutoModelForSequenceClassification.from_pretrained(
-        model_name,
-        num_labels=num_labels
-    )
+    def preprocess(batch):
+        return tokenizer(batch["message"], truncation=True, padding="max_length",
+                         max_length=cfg["transformer"]["max_length"])
 
-    # Create datasets
-    train_dataset = TextDataset(
-        train_df['text'].tolist(),
-        train_df['label'].tolist(),
-        tokenizer,
-        max_length=config['models']['transformer']['max_length']
-    )
+    ds_train = ds_train.map(preprocess, batched=True)
+    ds_val = ds_val.map(preprocess, batched=True)
+    ds_test = ds_test.map(preprocess, batched=True)
+    ds_train.set_format(type='torch', columns=['input_ids', 'attention_mask', 'lable'])
+    ds_val.set_format(type='torch', columns=['input_ids', 'attention_mask', 'lable'])
+    ds_test.set_format(type='torch', columns=['input_ids', 'attention_mask', 'lable'])
 
-    val_dataset = TextDataset(
-        val_df['text'].tolist(),
-        val_df['label'].tolist(),
-        tokenizer,
-        max_length=config['models']['transformer']['max_length']
-    )
-
-    # Training arguments
     training_args = TrainingArguments(
-        output_dir=output_dir,
-        num_train_epochs=config['models']['transformer']['num_epochs'],
-        per_device_train_batch_size=config['models']['transformer']['batch_size'],
-        per_device_eval_batch_size=config['models']['transformer']['batch_size'],
-        learning_rate=config['models']['transformer']['learning_rate'],
-        warmup_steps=config['models']['transformer']['warmup_steps'],
+        output_dir=os.path.join(output_dir, f"seed_{seed}"),
+        evaluation_strategy="epoch",
+        per_device_train_batch_size=cfg["transformer"]["batch_size"],
+        per_device_eval_batch_size=cfg["transformer"]["eval_batch_size"],
+        learning_rate=cfg["transformer"]["learning_rate"],
+        num_train_epochs=cfg["transformer"]["epochs"],
         weight_decay=0.01,
-        logging_dir=f"{config['training']['log_dir']}/{experiment_name}",
-        logging_steps=100,
-        evaluation_strategy="steps",
-        eval_steps=config['training']['eval_steps'],
-        save_steps=config['training']['save_steps'],
         load_best_model_at_end=True,
-        metric_for_best_model="eval_loss",
+        metric_for_best_model="f1",
+        greater_is_better=True,
+        save_total_limit=2,
+        seed=seed
     )
 
-    # Initialize trainer
     trainer = Trainer(
         model=model,
         args=training_args,
-        train_dataset=train_dataset,
-        eval_dataset=val_dataset,
+        train_dataset=ds_train,
+        eval_dataset=ds_val,
+        compute_metrics=compute_metrics,
+        tokenizer=tokenizer
     )
 
-    # Train
-    logger.info("Starting training...")
     trainer.train()
-
-    # Save model
-    logger.info(f"Saving model to {output_dir}")
-    trainer.save_model(output_dir)
-    tokenizer.save_pretrained(output_dir)
-
-    logger.info("Training complete")
+    preds = trainer.predict(ds_test)
+    metrics = preds.metrics
+    # save predictions for stats
+    preds_lables = np.argmax(preds.predictions, axis=1)
+    out_df = pd.DataFrame({"message": test_df["message"], "lable": test_df["lable"], "pred": preds_lables})
+    os.makedirs(output_dir, exist_ok=True)
+    out_df.to_csv(os.path.join(output_dir, f"preds_seed_{seed}.csv"), index=False)
+    # Save metrics
+    pd.DataFrame([metrics]).to_csv(os.path.join(output_dir, f"metrics_seed_{seed}.csv"), index=False)
+    print("Done seed", seed, "metrics:", metrics)
 
 
 if __name__ == "__main__":
-    from utils import load_config, setup_logging
-
-    setup_logging()
-    config = load_config()
-
-    # Train on original data
-    train_transformer(
-        config,
-        train_data_path=f"{config['data']['processed_path']}/train.csv",
-        output_dir="experiments/outputs/distil_roberta_orig/",
-        experiment_name="distil_roberta_orig"
-    )
-
-    # Train on augmented data (x2)
-    train_transformer(
-        config,
-        train_data_path=f"{config['data']['augmented_path']}/train_aug_x2.csv",
-        output_dir="experiments/outputs/distil_roberta_aug_x2/",
-        experiment_name="distil_roberta_aug_x2"
-    )
-
-    # Train on augmented data (x5)
-    train_transformer(
-        config,
-        train_data_path=f"{config['data']['augmented_path']}/train_aug_x5.csv",
-        output_dir="experiments/outputs/distil_roberta_aug_x5/",
-        experiment_name="distil_roberta_aug_x5"
-    )
-
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--train", required=True)
+    parser.add_argument("--val", required=True)
+    parser.add_argument("--test", required=True)
+    parser.add_argument("--out", required=True)
+    parser.add_argument("--seed", type=int, default=42)
+    args = parser.parse_args()
+    train_and_eval(args.train, args.val, args.test, args.out, seed=args.seed)
