@@ -1,0 +1,148 @@
+message,lable,pred
+please ensure safety during the flight.,0,0
+Altitude Zone <UNK> .,0,0
+RTH : Heading alignment.,1,1
+Aircraft in Restricted Zone.,1,1
+Max Flight Altitude Reached.,1,1
+Land aircraft immediately.,0,0
+Cancel Landing Failed.,1,1
+Manned aircraft too close.,1,1
+Max altitude set to <UNK> .,1,1
+The ground or walls may contain metal.,0,0
+Impact detected.,1,1
+Low battery voltage.,1,1
+"Low power,",1,1
+Cannot start Return to Home due to weak GPS signal.,1,1
+Your aircraft is at the boundary of an Authorization Zone.,1,1
+GPS Position Mismatch.,1,1
+"If the propellers are installed correctly and the aircraft still cannot takeoff, a motor error may exist.",0,0
+Remote controller signal weak.,1,1
+Waypoint Mission Paused.,1,1
+Always fly in compliance with altitude limitations.,0,0
+Aircraft entered Fixed-Wing Mode.,1,1
+Remote controller assisted takeoff initiated.,1,1
+Cannot find subject.,1,1
+Barometer initialization failed.,1,1
+Battery power limit will automatically reduce the aircraft's mobility to ensure flight safety.,1,0
+Adjust distance in MC Settings if required.,0,0
+Strong Remote Controller Interference.,1,1
+Upward Obstacle Detected.,1,1
+Propeller Fell Off.,1,1
+Extra payload detected.,1,1
+At least two Waypoints are needed.,0,0
+If needed.,0,0
+AirSense communication error.,1,1
+"Solution: Restart the aircraft, if the problem persists, contact DJI Support.",0,0
+Remote controller disconnected from aircraft.,1,1
+Switched to T (Tripod)-mode.,1,1
+RTH Altitude : 65FT.,0,0
+PalmControl in Process.,1,1
+RTK signal weak.,1,1
+Motors Started.,1,1
+Backward sensor(s) blocked.,1,1
+Propulsion output is limited to ensure the health of the battery.,1,0
+Please contact DJI Support for help.,0,0
+A passenger aircraft is nearby.,1,1
+Satellite positioning off.,1,1
+Aircraft propulsion system error.,1,1
+Return-to-Home Altitude : 65FT.,0,0
+Downlink Restored (after 0m 1s).,1,1
+Max Flight Distance Reached.,1,1
+Please fly with caution.,0,0
+Aircraft in high interference environment.,1,1
+Adjust in Main Controller Settings if necessary.,0,0
+High wind velocity.,1,1
+Cannot track subject:,1,1
+Switched to P (Positioning)-mode.,1,1
+Check whether propellers are installed correctly.,0,0
+Battery: Battery Error.,1,1
+Camera error.,1,1
+Return-to-Home Altitude : 98FT.,0,0
+Max altitude and distance set.,1,1
+Warning: Max Flight Altitude Reached.,1,1
+Lower altitude immediately and manually return to home.,0,0
+Drag a box around or tap a target on screen.,0,0
+Forward Obstacle Sensing not Responding.,1,1
+Stop flying and wait for battery temperature to return to normal.,0,0
+Vision Positioning obstacle sensing is unavailable.,0,0
+Restart camera.,0,0
+Warning: Aircraft is less than <UNK> (minimum) away from the object below.,1,0
+Fly with caution and land in a safe place ASAP.,0,0
+Flight Mode Set to Attitude.,1,1
+"If needed, enable it in Main Controller Settings.",0,0
+Cannot takeoff.,1,1
+The remaining battery is only enough for RTH.,0,0
+Downward Obstacle Sensing is not functioning.,1,1
+Battery communication malfunction.,1,1
+Propellers not installed.,1,1
+Reselect subject.,1,1
+Color display in the Liveview has been enhanced.,1,1
+Ambient Light too Weak.,1,1
+Aircraft returning to Home Point.,1,1
+Aircraft will land.,1,1
+Shooting is currently not permitted.,1,0
+Capture Failed.,1,1
+Adjust antennas.,0,0
+Cannot Takeoff.,1,1
+Move Away and retry.,0,0
+cannot start recording QuickShot.,1,1
+Reaching maximum altitude.,1,1
+The sky part is filled automatically.,0,1
+Aircraft not in flight.,0,1
+Gimbal Pitch Reached Movement Limit.,1,1
+"Flight control mode error,",1,1
+Set Flight Mode to GPS to fly safe.,0,0
+Downward ambient light too low.,1,1
+Battery Signal Error.,1,1
+Taking off.,1,1
+Cannot send ActiveTrack command.,1,1
+Signal interruption maybe more likely.,0,1
+Insert card.,0,0
+Your palm is too far away from the aircraft.,1,1
+Waypoint Mission Start.,1,1
+Lightly press to adjust.,0,0
+Take off in P-Mode.,1,0
+Gimbal stuck.,1,1
+No GPS signal.,1,1
+Aircraft flight control obtained by remote controller UNKNOWN.,1,1
+Please check the batteries are inserted correctly.,0,0
+Not Allowed to change Aircraft Mode.,1,1
+Press C2 to exit.,0,0
+Downward vision sensor error.,1,1
+Target lost.,1,1
+Motor stuck.,1,1
+"To take off in non-P mode, toggle Flight Mode Switch to another mode and then toggle it back.",0,0
+Starting Smart Track.,1,1
+Solution: <NUM> . Ensure there are no magnets or metal objects near the aircraft.,0,0
+Please fly away or land with caution.,0,0
+Hardware malfunction:,1,1
+Downlink Restored (after 0m 11s).,1,1
+RTK Base Station Data Not Received.,1,1
+Vision System unavailable.,0,1
+SD card speed low.,1,1
+Return to home or land promptly.,0,0
+Cannot start Self-Timer.,1,1
+Restart aircraft and DJI Fly.,0,0
+Check whether gimbal lock is removed and ensure gimbal can rotate freely.,0,0
+Aircraft is too far away.,1,1
+Fly with caution.,0,0
+AI Spot-Check failed.,1,1
+Your aircraft has entered a Warning Zone (Class D).,1,1
+Aircraft out of Range.,1,1
+Unable to take off before unlocking.,1,1
+Motor or propeller error.,1,1
+Gimbal IMU data error.,1,1
+Pano shooting completed.,1,1
+Revise Flight Route.,0,0
+Temp Max Altitude : 98ft.,0,0
+Please step closer.,0,0
+Battery power low.,1,1
+"Aircraft is in Attitude mode, so that it will not hover.",0,0
+Critical low battery voltage.,1,1
+Cannot enter ActiveTrack.,1,1
+Critical Low Battery.,1,1
+Unable to take off in low light environment.,1,1
+Warm up the battery temperature to above <NUM> degree Celsius to ensure a safe flight.,0,0
+SD card malfunction.,1,1
+Camera not calibrated.,1,1
+Move away from sources of interference before.,0,0
