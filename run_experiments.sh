@@ -1,52 +1,46 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -e
 
-# Event Detection Experiments Runner
-# This script runs the complete pipeline for event detection experiments
+CFG=config.yaml
+PYTHON=python3
 
-set -e  # Exit on error
+echo "1) Data prep..."
+$PYTHON src/data_prep.py
 
-echo "=========================================="
-echo "Event Detection Experiments Pipeline"
-echo "=========================================="
+echo "2) Baseline training..."
+$PYTHON src/baseline_train.py
 
-# Step 1: Data Preparation
-echo -e "\n[1/6] Preparing data..."
-python src/data_prep.py
-
-# Step 2: Data Augmentation
-echo -e "\n[2/6] Augmenting training data..."
-python src/augment.py
-
-# Step 3: Train Baseline Model
-echo -e "\n[3/6] Training baseline model..."
-python src/baseline_train.py
-
-# Step 4: Train Transformer Models
-echo -e "\n[4/6] Training transformer models..."
-echo "  - Training on original data..."
-python src/transformer_train.py
-
-echo "  - Training on 2x augmented data..."
-# (Handled in transformer_train.py)
-
-echo "  - Training on 5x augmented data..."
-# (Handled in transformer_train.py)
-
-# Step 5: Evaluate All Models
-echo -e "\n[5/6] Evaluating all models..."
-python src/evaluate.py
-
-# Step 6: Statistical Significance Tests
-echo -e "\n[6/6] Running statistical tests..."
-python src/stats_test.py
-
-echo -e "\n=========================================="
-echo "Pipeline Complete!"
-echo "=========================================="
-echo "Results saved to: experiments/outputs/"
-echo "Logs saved to: experiments/logs/"
-echo ""
-echo "To view results:"
-echo "  - Evaluation metrics: experiments/outputs/evaluation_results.json"
-echo "  - Statistical tests: experiments/outputs/statistical_tests.json"
-
+#echo "3) Augment train datasets (x2, x5)..."
+#$PYTHON src/augment.py
+#
+#echo "4) Train Transformer on original and augmented (multi-seed)"
+#OUTDIR=experiments/outputs/distil_roberta_orig
+#mkdir -p $OUTDIR
+#for SEED in 42 7 123 2023 999; do
+#  echo "seed $SEED original..."
+#  $PYTHON src/transformer_train.py --train data/processed/train.csv --val data/processed/val.csv --test data/processed/test.csv --out $OUTDIR --seed $SEED
+#done
+#
+## augmented x2
+#OUTDIR2=experiments/outputs/distil_roberta_aug_x2
+#mkdir -p $OUTDIR2
+#for SEED in 42 7 123 2023 999; do
+#  echo "seed $SEED aug x2..."
+#  $PYTHON src/transformer_train.py --train data/augmented/train_aug_x2.csv --val data/processed/val.csv --test data/processed/test.csv --out $OUTDIR2 --seed $SEED
+#done
+#
+## augmented x5
+#OUTDIR5=experiments/outputs/distil_roberta_aug_x5
+#mkdir -p $OUTDIR5
+#for SEED in 42 7 123 2023 999; do
+#  echo "seed $SEED aug x5..."
+#  $PYTHON src/transformer_train.py --train data/augmented/train_aug_x5.csv --val data/processed/val.csv --test data/processed/test.csv --out $OUTDIR5 --seed $SEED
+#done
+#
+#echo "5) Summarize metrics..."
+#$PYTHON src/evaluate.py experiments/outputs/distil_roberta_orig
+#$PYTHON src/evaluate.py experiments/outputs/distil_roberta_aug_x2
+#$PYTHON src/evaluate.py experiments/outputs/distil_roberta_aug_x5
+#
+#echo "6) Statistical tests (orig vs aug x2)"
+#$PYTHON src/stats_test.py experiments/outputs/distil_roberta_orig experiments/outputs/distil_roberta_aug_x2
