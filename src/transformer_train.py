@@ -13,17 +13,17 @@ cfg = load_config()
 
 
 def compute_metrics(pred):
-    lables = pred.lable_ids
+    labels = pred.label_ids
     preds = np.argmax(pred.predictions, axis=1)
-    precision, recall, f1, _ = precision_recall_fscore_support(lables, preds, average='binary', pos_lable=1)
-    acc = accuracy_score(lables, preds)
+    precision, recall, f1, _ = precision_recall_fscore_support(labels, preds, average='binary', pos_label=1)
+    acc = accuracy_score(labels, preds)
     return {"accuracy": acc, "precision": precision, "recall": recall, "f1": f1}
 
 
 def train_and_eval(train_csv, val_csv, test_csv, output_dir, seed=42):
     set_seed(seed)
     tokenizer = AutoTokenizer.from_pretrained(cfg["transformer"]["model_name"])
-    model = AutoModelForSequenceClassification.from_pretrained(cfg["transformer"]["model_name"], num_lables=2)
+    model = AutoModelForSequenceClassification.from_pretrained(cfg["transformer"]["model_name"], num_labels=2)
 
     train_df = pd.read_csv(train_csv)[["message", "lable"]]
     val_df = pd.read_csv(val_csv)[["message", "lable"]]

@@ -10,7 +10,7 @@ def summarize_preds(preds_folder):
     metrics = []
     for f in files:
         df = pd.read_csv(f)
-        y_true = df["label"].values
+        y_true = df["lable"].values
         y_pred = df["pred"].values
         p, r, f1, _ = precision_recall_fscore_support(y_true, y_pred, average='binary', pos_label=1)
         acc = accuracy_score(y_true, y_pred)

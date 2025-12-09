@@ -42,7 +42,7 @@ def mcnemar_test(preds_a_folder, preds_b_folder):
     assert len(df_a) == len(df_b)
     a_pred = df_a["pred"].values
     b_pred = df_b["pred"].values
-    y_true = df_a["label"].values
+    y_true = df_a["lable"].values
     # contingency: [ [both_correct, a_correct_b_wrong], [a_wrong_b_correct, both_wrong] ]
     both_correct = 0;
     a_correct_b_wrong = 0;
