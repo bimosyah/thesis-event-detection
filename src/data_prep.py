@@ -9,9 +9,15 @@ cfg = load_config()
 
 
 def prepare_splits(input_csv, out_dir, test_ratio=0.2, val_ratio=0.1, random_state=42):
-    df = pd.read_csv(input_csv)
+    # Read CSV with semicolon delimiter
+    df = pd.read_csv(input_csv, sep=';')
+
+    # Handle both 'message' and 'message_clean' column names
+    if 'message_clean' in df.columns:
+        df = df.rename(columns={'message_clean': 'message'})
+
     # REQUIRED: columns message,lable
-    assert "message" in df.columns and "lable" in df.columns
+    assert "message" in df.columns and "lable" in df.columns, f"Missing required columns. Found: {df.columns.tolist()}"
     df = df.dropna(subset=["message", "lable"]).reset_index(drop=True)
     # simple stratified split
     train_val, test = train_test_split(df, test_size=test_ratio, stratify=df["lable"], random_state=random_state)

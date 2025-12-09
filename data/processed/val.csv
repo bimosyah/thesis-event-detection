@@ -1,0 +1,74 @@
+message,lable
+"Turn on ""Multiple Flight Modes"" to enable Atti and Sport Modes.",0
+please keep the aircraft stationary and level before flight.,0
+"Battery cell broken,",1
+Max altitude set to <UNK> and max distance set to <UNK> .,1
+Obstacle sensing not available at night.,1
+Motor <UNK> stalled.,1
+Please calibrate using infinity.,0
+Minimum RTH Altitude is 98ft.,0
+Advanced RTH Image Transmission Recovered.,1
+Move to environment with adequate light.,0
+You can decelerate the descending speed and avoid obstacles using sticks.,0
+Enable this option in Main Controller Settings if needed.,0
+Remote controller in high interference environment.,1
+Propulsion output has been limited to ensure battery health.,1
+Cannot enable Intelligent Flight Mode: Low Battery.,1
+AE Locked.,1
+Aircraft braking distance increased and flight time decreased.,1
+Ambient light too low.,1
+"High-altitude flight,",0
+Adjust antenna and avoid signal block.,0
+Motor unable to rotate.,1
+Object too far for laser rangefinder.,1
+Aircraft is returning to the Home Point.,1
+The gimbal will rotate when the aircraft starts or stops.,1
+GPS module error.,1
+Downward sensor error.,1
+Return home and land soon.,0
+Aircraft battery level low.,1
+Avoid blocking the antennas and keep the antennas parallel to and facing toward the aircraft during flight.,0
+Aircraft in Restricted Zones.,1
+Locating Landing Point.,1
+Home Point updated.,1
+Aircraft exceeded distance limit and has exited Hyperlapse mode.,1
+Forced landing.,1
+Move to an open area for takeoff or turn off RTK.,0
+Insufficient SD card space.,1
+Aircraft in Altitude Zone.,0
+"Compass error,",1
+Obstacle avoidance unavailable.,0
+Please retry.,0
+Landing Gear Lowering.,1
+Strong Interference.,1
+Home Point recorded.,1
+Aircraft in Auto Power Off Protection.,1
+Motor error.,1
+flight time is shortened.,1
+Your aircraft is at the boundary of an Altitude Zone.,1
+Camera Error.,1
+Braking now.,0
+Gimbal Yaw Limit Reached.,1
+Always maintain visual line of sight unless otherwise authorized.,0
+Aircraft ActiveTrack max speed of <UNK> .,0
+Aircraft is returning to the starting point.,1
+Backward ambient light too low.,1
+The aircraft is moving.,1
+Get Closer and retry.,0
+Pano successful.,1
+"If this issue persists, land immediately.",0
+Battery temperature too low.,1
+Auxiliary Bottom Light set to automatic mode.,1
+Minimum RTH Altitude is 30m.,0
+Extended flight distance detected.,1
+"Sprayer turned OFF,",1
+Flight altitude and distance restricted to <UNK> and <UNK> .,1
+Backward Obstacle Sensing is not functioning.,1
+Check whether the propellers are attached to the correct motors based on their markings.,0
+Shooting interrupted.,1
+Please make sure base station antenna is connected to the correct port.,0
+Subject too Large.,0
+Data Recorder File Index is <NUM> .,1
+Lens not connected.,1
+Land as soon as possible.,1
+Battery Voltage Difference too large.,1
