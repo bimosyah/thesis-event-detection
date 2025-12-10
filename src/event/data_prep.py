@@ -33,4 +33,5 @@ def prepare_splits(input_csv, out_dir, test_ratio=0.2, val_ratio=0.1, random_sta
 if __name__ == "__main__":
     cfg = load_config()
     set_seed(cfg["random_state"])
-    prepare_splits(cfg["dataset_path"], cfg["processed_dir"], cfg["test_ratio"], cfg["val_ratio"], cfg["random_state"])
+    event_processed_dir = os.path.join(cfg["processed_dir"], "event")
+    prepare_splits(cfg["dataset_path"], event_processed_dir, cfg["test_ratio"], cfg["val_ratio"], cfg["random_state"])

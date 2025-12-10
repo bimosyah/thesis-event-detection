@@ -78,10 +78,10 @@ def augment_train(csv_in, csv_out, factor=2):
 
 if __name__ == "__main__":
 
-    p = cfg["processed_dir"]
+    p = os.path.join(cfg["processed_dir"], "event")
     train_csv = os.path.join(p, "train.csv")
     ad = cfg["augmented_dir"]
     os.makedirs(ad, exist_ok=True)
     for f in cfg["augmentation"]["augment_factors"]:
-        out = os.path.join(ad, f"train_aug_x{f}.csv")
+        out = os.path.join(ad, f"event_train_aug_x{f}.csv")
         augment_train(train_csv, out, factor=f)
