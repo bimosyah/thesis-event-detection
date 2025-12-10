@@ -6,6 +6,18 @@ test_ratio: 0.20
 val_ratio: 0.10
 random_state: 42
 
+# Event Detection Task
+event:
+  processed_dir: "data/processed/event"
+  augmented_dir: "data/augmented"
+  output_dir: "experiments/event/outputs"
+
+# NER Task
+ner:
+  processed_dir: "data/processed/ner"
+  augmented_dir: "data/augmented"
+  output_dir: "experiments/ner/outputs"
+
 baseline:
   tfidf:
     ngram_range: [ 1, 2 ]
@@ -23,7 +35,7 @@ transformer:
   learning_rate: 0.00002
   epochs: 4
   warmup_ratio: 0.06
-  output_dir: "experiments/outputs"
+  output_dir: "experiments/event/outputs"
 
 augmentation:
   method: "mlm"  # options: mlm | backtranslation | synonym

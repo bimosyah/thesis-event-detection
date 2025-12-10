@@ -34,6 +34,6 @@ def run_baseline(train_csv, val_csv, test_csv, output_dir):
 
 
 if __name__ == "__main__":
-    p = os.path.join(cfg["processed_dir"], "event")
+    p = cfg["event"]["processed_dir"]
     run_baseline(os.path.join(p, "train.csv"), os.path.join(p, "val.csv"), os.path.join(p, "test.csv"),
-                 "experiments/event/outputs/baseline")
+                 os.path.join(cfg["event"]["output_dir"], "baseline"))
