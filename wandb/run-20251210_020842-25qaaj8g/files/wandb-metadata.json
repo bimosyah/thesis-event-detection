@@ -1,0 +1,52 @@
+{
+  "os":  "Linux-6.6.105+-x86_64-with-glibc2.35",
+  "python":  "CPython 3.12.12",
+  "startedAt":  "2025-12-10T02:08:42.070093Z",
+  "args":  [
+    "--train",
+    "data/processed/event/train.csv",
+    "--val",
+    "data/processed/event/val.csv",
+    "--test",
+    "data/processed/event/test.csv",
+    "--out",
+    "experiments/event/outputs/distil_roberta_orig",
+    "--seed",
+    "2023"
+  ],
+  "program":  "/content/thesis-event-detection/src/event/transformer_train.py",
+  "codePath":  "src/event/transformer_train.py",
+  "codePathLocal":  "src/event/transformer_train.py",
+  "git":  {
+    "remote":  "https://github.com/bimosyah/thesis-event-detection.git",
+    "commit":  "ccd7eaef2a8521ef70bfd5cc8eb2e4240dcdabcc"
+  },
+  "email":  "bimosyahputro88@gmail.com",
+  "root":  "/content/thesis-event-detection",
+  "host":  "9d1e51e12516",
+  "executable":  "/usr/bin/python3",
+  "cpu_count":  4,
+  "cpu_count_logical":  8,
+  "gpu":  "Tesla T4",
+  "gpu_count":  1,
+  "disk":  {
+    "/":  {
+      "total":  "253055008768",
+      "used":  "47415939072"
+    }
+  },
+  "memory":  {
+    "total":  "54750429184"
+  },
+  "gpu_nvidia":  [
+    {
+      "name":  "Tesla T4",
+      "memoryTotal":  "16106127360",
+      "cudaCores":  2560,
+      "architecture":  "Turing",
+      "uuid":  "GPU-2fb12a5f-77a2-5948-7d2e-e98fda7ec55c"
+    }
+  ],
+  "cudaVersion":  "12.4",
+  "writerId":  "9jwm0lwa2qfm3mdfxv7zi2d094ik47fz"
+}
