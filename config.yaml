@@ -17,6 +17,13 @@ ner:
   processed_dir: "data/processed/ner"
   augmented_dir: "data/augmented"
   output_dir: "experiments/ner/outputs"
+  model_name: "bert-base-cased"
+  max_len: 64
+  batch_size: 8
+  lr: 3e-5
+  epochs: 10
+  use_crf: true
+
 
 baseline:
   tfidf:
@@ -36,6 +43,7 @@ transformer:
   epochs: 4
   warmup_ratio: 0.06
   output_dir: "experiments/event/outputs"
+  wandb_project: "event-detection"
 
 augmentation:
   method: "mlm"  # options: mlm | backtranslation | synonym

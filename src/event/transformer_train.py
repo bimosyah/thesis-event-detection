@@ -34,7 +34,7 @@ def train_and_eval(train_csv, val_csv, test_csv, output_dir, seed=42):
     # Initialize wandb with meaningful run name
     run_name = f"distilroberta_{dataset_type}_seed_{seed}"
     wandb.init(
-        project="event-detection",
+        project=cfg["transformer"].get("wandb_project", "event-detection"),
         name=run_name,
         config={
             "model_name": cfg["transformer"]["model_name"],
