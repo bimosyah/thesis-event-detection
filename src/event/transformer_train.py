@@ -2,6 +2,7 @@ import argparse
 import numpy as np
 import os
 import pandas as pd
+import wandb
 
 from datasets import Dataset
 from sklearn.metrics import precision_recall_fscore_support, accuracy_score
@@ -22,6 +23,32 @@ def compute_metrics(pred):
 
 def train_and_eval(train_csv, val_csv, test_csv, output_dir, seed=42):
     set_seed(seed)
+
+    # Determine dataset type from train_csv path
+    dataset_type = "orig"
+    if "aug_x2" in train_csv:
+        dataset_type = "aug_x2"
+    elif "aug_x5" in train_csv:
+        dataset_type = "aug_x5"
+
+    # Initialize wandb with meaningful run name
+    run_name = f"distilroberta_{dataset_type}_seed_{seed}"
+    wandb.init(
+        project="event-detection",
+        name=run_name,
+        config={
+            "model_name": cfg["transformer"]["model_name"],
+            "max_length": cfg["transformer"]["max_length"],
+            "batch_size": cfg["transformer"]["batch_size"],
+            "learning_rate": cfg["transformer"]["learning_rate"],
+            "epochs": cfg["transformer"]["epochs"],
+            "seed": seed,
+            "dataset_type": dataset_type,
+            "train_csv": train_csv,
+        },
+        reinit=True
+    )
+
     tokenizer = AutoTokenizer.from_pretrained(cfg["transformer"]["model_name"])
     model = AutoModelForSequenceClassification.from_pretrained(cfg["transformer"]["model_name"], num_labels=2)
 
@@ -62,7 +89,9 @@ def train_and_eval(train_csv, val_csv, test_csv, output_dir, seed=42):
         metric_for_best_model="f1",
         greater_is_better=True,
         save_total_limit=2,
-        seed=seed
+        seed=seed,
+        report_to="wandb",
+        run_name=run_name
     )
 
     trainer = Trainer(
@@ -85,6 +114,9 @@ def train_and_eval(train_csv, val_csv, test_csv, output_dir, seed=42):
     # Save metrics
     pd.DataFrame([metrics]).to_csv(os.path.join(output_dir, f"metrics_seed_{seed}.csv"), index=False)
     print("Done seed", seed, "metrics:", metrics)
+
+    # Finish wandb run
+    wandb.finish()
 
 
 if __name__ == "__main__":
